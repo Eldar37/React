@@ -29,9 +29,9 @@ const trips = [
     tags: ['чай', 'архитектура', 'велосипед'],
     highlight: 'Прогулка по бамбуковому лесу Арасиямы до рассвета и поздний завтрак в Nishiki Market.',
     description:
-      'Собранный маршрут без толпы: мы приходим в святыни на рассвете, пьём матча латте в местных киосках и катаемся по кварталам, где всё ещё пахнет кедром.',
+      'Собранный маршрут без толпы: приходим в святыни на рассвете, пьём матча латте в киосках и катаемся по кварталам, где всё ещё пахнет кедром.',
     plan: [
-      { name: 'Фусими Инаари', note: 'Начинаем в 5:30, тропа через тысячи торий почти пустая.' },
+      { name: 'Фусими Инаари', note: 'Стартуем в 5:30, тропа через тысячи торий почти пустая.' },
       { name: 'Арасияма', note: 'Бамбуковая роща, мост Тогецукё, чай у реки Ои.' },
       { name: 'Гион', note: 'Медленные улицы с гейшими кварталами, сувениры у Yasaka Shrine.' },
     ],
@@ -63,7 +63,7 @@ const trips = [
     tags: ['панорамы', 'сыр', 'лёгкие тропы'],
     highlight: 'Ранний подъём к храму Гергети, хачапури на террасе Rooms Kazbegi.',
     description:
-      'Маршрут для короткого побега: чуть-чуть городской жизни, чуть-чуть альпийских лугов. Тёплые хинкали, облака вокруг Казбека и влажный воздух ущелий.',
+      'Маршрут для короткого побега: немного городской жизни, чуть-чуть альпийских лугов. Тёплые хинкали, облака вокруг Казбека и влажный воздух ущелий.',
     plan: [
       { name: 'Тбилиси', note: 'Серные бани, кофе в Fabrika, мост Мира вечером.' },
       { name: 'Военно-Грузинская дорога', note: 'Остановка у Жинвальского водохранилища, смотровые у Гудаури.' },
@@ -78,12 +78,29 @@ function App() {
 
   return (
     <div className="page">
-      <header className="hero">
+      <header className="site-header">
+        <div className="brand">
+          <span className="brand-dot" />
+          <div>
+            <span className="brand-name">Slow Travel</span>
+            <span className="brand-sub">медленные маршруты</span>
+          </div>
+        </div>
+        <nav className="nav">
+          <a href="#routes">Маршруты</a>
+          <a href="#about">Зачем</a>
+        </nav>
+        <a className="cta" href="#contact">
+          Связаться
+        </a>
+      </header>
+
+      <header className="hero" id="about">
         <p className="eyebrow">Список и детали</p>
         <h1>Slow Travel</h1>
         <p className="lede">
-          Подборка маршрутов, где важно не количество галочек, а настроение. Нажмите на идею
-          слева, чтобы увидеть детали, план и неожиданные акценты.
+          Подборка маршрутов, где важно не количество галочек, а настроение. Нажмите на идею слева, чтобы увидеть
+          детали, план и неожиданные акценты.
         </p>
         <div className="hero-pills">
           <span className="pill ghost">Маршруты</span>
@@ -92,7 +109,7 @@ function App() {
         </div>
       </header>
 
-      <main className="grid">
+      <main className="grid" id="routes">
         <section className="panel list">
           <div className="panel-header">
             <div>
@@ -180,6 +197,17 @@ function App() {
           )}
         </section>
       </main>
+
+      <footer className="footer" id="contact">
+        <div>
+          <p className="label">Slow Travel</p>
+          <p className="footer-text">Короткие маршруты без спешки. Подстроим под ваш темп и даты.</p>
+        </div>
+        <div className="footer-links">
+          <a href="mailto:hello@slowtravel.test">hello@slowtravel.test</a>
+          <span>+ чат в мессенджере</span>
+        </div>
+      </footer>
     </div>
   )
 }
