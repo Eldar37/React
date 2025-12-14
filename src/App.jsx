@@ -1,5 +1,11 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { Link, NavLink, Route, Routes, useNavigate } from 'react-router-dom'
 import './App.css'
+import BasketDetail from './basket_detail.jsx'
+import BasketList from './basket_list.jsx'
+import CreateOrder from './create_order.jsx'
+import UpdateOrder from './update_order.jsx'
+import { listBasketRoutes, saveRouteToBasket } from './api/fakeStore.js'
 
 const trips = [
   {
@@ -72,44 +78,100 @@ const trips = [
   },
 ]
 
-function App() {
-  const [activeId, setActiveId] = useState(trips[0].id)
+function CatalogPage() {
+  const navigate = useNavigate()
+
+  const [activeId, setActiveId] = useState(trips[0]?.id ?? '')
+  const [savedRouteIds, setSavedRouteIds] = useState([])
+  const [busyId, setBusyId] = useState('')
+  const [banner, setBanner] = useState('')
+
   const activeTrip = useMemo(() => trips.find((item) => item.id === activeId), [activeId])
+  const isSaved = activeTrip ? savedRouteIds.includes(activeTrip.id) : false
+
+  const showBanner = (message) => {
+    setBanner(message)
+    window.setTimeout(() => setBanner(''), 1400)
+  }
+
+  useEffect(() => {
+    let canceled = false
+
+    const loadSaved = async () => {
+      try {
+        const saved = await listBasketRoutes()
+        if (canceled) return
+        setSavedRouteIds(saved.map((r) => r.id))
+      } catch {
+        if (!canceled) setSavedRouteIds([])
+      }
+    }
+
+    loadSaved()
+    return () => {
+      canceled = true
+    }
+  }, [])
+
+  const saveActive = async () => {
+    if (!activeTrip) return
+    if (savedRouteIds.includes(activeTrip.id)) {
+      showBanner('Уже в подборке')
+      return
+    }
+
+    setBusyId(activeTrip.id)
+    try {
+      await saveRouteToBasket(activeTrip)
+      setSavedRouteIds((prev) => (prev.includes(activeTrip.id) ? prev : [...prev, activeTrip.id]))
+      showBanner('Маршрут сохранён')
+    } catch (saveError) {
+      showBanner(saveError.message || 'Не удалось сохранить маршрут')
+    } finally {
+      setBusyId('')
+    }
+  }
+
+  const createPlanForActive = async () => {
+    if (!activeTrip) return
+
+    if (!savedRouteIds.includes(activeTrip.id)) {
+      setBusyId(activeTrip.id)
+      try {
+        await saveRouteToBasket(activeTrip)
+        setSavedRouteIds((prev) => (prev.includes(activeTrip.id) ? prev : [...prev, activeTrip.id]))
+      } catch (saveError) {
+        showBanner(saveError.message || 'Не удалось сохранить маршрут')
+        setBusyId('')
+        return
+      }
+      setBusyId('')
+    }
+
+    navigate(`/basket/${activeTrip.id}/create-order`)
+  }
 
   return (
-    <div className="page">
-      <header className="site-header">
-        <div className="brand">
-          <span className="brand-dot" />
-          <div>
-            <span className="brand-name">Slow Travel</span>
-            <span className="brand-sub">медленные маршруты</span>
-          </div>
-        </div>
-        <nav className="nav">
-          <a href="#routes">Маршруты</a>
-          <a href="#about">Зачем</a>
-        </nav>
-        <a className="cta" href="#contact">
-          Связаться
-        </a>
-      </header>
-
-      <header className="hero" id="about">
-        <p className="eyebrow">Список и детали</p>
+    <>
+      <header className="hero">
+        <p className="eyebrow">Каталог</p>
         <h1>Slow Travel</h1>
         <p className="lede">
-          Подборка маршрутов, где важно не количество галочек, а настроение. Нажмите на идею слева, чтобы увидеть
-          детали, план и неожиданные акценты.
+          Подборка маршрутов, где важно не количество галочек, а настроение. Нажмите на идею слева, чтобы увидеть детали,
+          план и неожиданные акценты.
         </p>
         <div className="hero-pills">
-          <span className="pill ghost">Маршруты</span>
-          <span className="pill ghost">6-7 дней</span>
+          <span className="pill ghost">4–7 дней</span>
           <span className="pill ghost">медленный темп</span>
+          <Link className="pill ghost" to="/basket">
+            моя подборка
+          </Link>
         </div>
       </header>
 
-      <main className="grid" id="routes">
+      {banner && <div className="banner">{banner}</div>}
+
+      <main className="grid">
         <section className="panel list">
           <div className="panel-header">
             <div>
@@ -167,11 +229,25 @@ function App() {
                 </div>
                 <div className="stat">
                   <p className="stat-label">Теги</p>
-                  <p className="stat-value">{activeTrip.tags.join(' • ')}</p>
+                  <p className="stat-value">{activeTrip.tags.join(' · ')}</p>
                 </div>
               </div>
 
               <p className="description">{activeTrip.description}</p>
+
+              <div className="actions">
+                <button className="button primary" type="button" onClick={saveActive} disabled={isSaved || busyId === activeTrip.id}>
+                  {isSaved ? 'Уже в подборке' : busyId === activeTrip.id ? 'Сохраняем...' : 'Сохранить в подборку'}
+                </button>
+                <button className="button ghost" type="button" onClick={createPlanForActive} disabled={busyId === activeTrip.id}>
+                  {busyId === activeTrip.id ? 'Готовим...' : 'Создать план'}
+                </button>
+                {isSaved && (
+                  <Link className="button ghost" to={`/basket/${activeTrip.id}`}>
+                    Открыть сохранённый
+                  </Link>
+                )}
+              </div>
 
               <div className="plan">
                 <p className="eyebrow muted">День за днём</p>
@@ -197,8 +273,61 @@ function App() {
           )}
         </section>
       </main>
+    </>
+  )
+}
 
-      <footer className="footer" id="contact">
+function NotFound() {
+  return (
+    <section className="panel">
+      <div className="panel-header">
+        <div>
+          <p className="eyebrow muted">Ошибка</p>
+          <h2>Страница не найдена</h2>
+        </div>
+        <Link className="button primary" to="/">
+          В каталог
+        </Link>
+      </div>
+      <p className="description">Проверьте адрес или вернитесь в каталог маршрутов.</p>
+    </section>
+  )
+}
+
+function App() {
+  return (
+    <div className="page">
+      <header className="site-header">
+        <Link className="brand" to="/">
+          <span className="brand-dot" />
+          <div>
+            <span className="brand-name">Slow Travel</span>
+            <span className="brand-sub">каталог · подборка · планы</span>
+          </div>
+        </Link>
+        <nav className="nav">
+          <NavLink to="/" end className={({ isActive }) => (isActive ? 'is-active' : undefined)}>
+            Каталог
+          </NavLink>
+          <NavLink to="/basket" className={({ isActive }) => (isActive ? 'is-active' : undefined)}>
+            Моя подборка
+          </NavLink>
+        </nav>
+        <a className="cta" href="mailto:hello@slowtravel.test">
+          Связаться
+        </a>
+      </header>
+
+      <Routes>
+        <Route path="/" element={<CatalogPage />} />
+        <Route path="/basket" element={<BasketList />} />
+        <Route path="/basket/:routeId" element={<BasketDetail />} />
+        <Route path="/basket/:routeId/create-order" element={<CreateOrder />} />
+        <Route path="/orders/:orderId/edit" element={<UpdateOrder />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+
+      <footer className="footer">
         <div>
           <p className="label">Slow Travel</p>
           <p className="footer-text">Короткие маршруты без спешки. Подстроим под ваш темп и даты.</p>
