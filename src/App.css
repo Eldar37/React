@@ -72,8 +72,49 @@
 }
 
 .nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.nav-links {
   display: inline-flex;
   gap: 12px;
+}
+
+.nav-auth {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-user {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.button.ghost.header-logout {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0;
+}
+
+.button.ghost.header-logout::before {
+  content: 'Выйти';
+  font-size: 14px;
+}
+
+.button.ghost.header-logout:hover {
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .nav a {
@@ -400,6 +441,32 @@
   font-weight: 600;
 }
 
+.footer-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(22, 163, 74, 0.26);
+  background: rgba(22, 163, 74, 0.08);
+  color: #16a34a;
+}
+
+.footer-whatsapp:hover {
+  background: rgba(22, 163, 74, 0.12);
+  border-color: rgba(22, 163, 74, 0.4);
+}
+
+.footer-whatsapp-icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+}
+
+.footer-whatsapp span {
+  white-space: nowrap;
+}
+
 
 .pill {
   text-decoration: none;
@@ -540,6 +607,227 @@ textarea {
   margin: 0;
   color: #ef4444;
   font-size: 14px;
+}
+
+.auth-shell {
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-card {
+  width: min(520px, 100%);
+}
+
+.auth-tabs {
+  margin: 12px 0 14px;
+  padding: 6px;
+  border-radius: 12px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.auth-tab {
+  border: 1px solid transparent;
+  background: transparent;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  color: #475569;
+}
+
+.auth-tab.is-active {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  color: #0f172a;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+}
+
+.theme-toggle {
+  padding: 8px 10px;
+}
+
+.theme-toggle-icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+}
+
+.theme-toggle-text {
+  font-size: 13px;
+  line-height: 1;
+}
+
+.button.ghost.header-theme {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.button.ghost.header-theme:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+:root[data-theme='dark'] .hero {
+  background: rgba(15, 23, 42, 0.72);
+  border-color: rgba(148, 163, 184, 0.18);
+}
+
+:root[data-theme='dark'] .lede {
+  color: rgba(226, 232, 240, 0.78);
+}
+
+:root[data-theme='dark'] .pill {
+  background: rgba(15, 23, 42, 0.34);
+  border-color: rgba(148, 163, 184, 0.22);
+  color: #e2e8f0;
+}
+
+:root[data-theme='dark'] .pill.subtle {
+  background: rgba(15, 23, 42, 0.34);
+  color: rgba(226, 232, 240, 0.7);
+}
+
+:root[data-theme='dark'] .pill.ghost {
+  background: rgba(15, 23, 42, 0.2);
+}
+
+:root[data-theme='dark'] .panel {
+  background: rgba(15, 23, 42, 0.74);
+  border-color: rgba(148, 163, 184, 0.18);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.35);
+}
+
+:root[data-theme='dark'] .card {
+  background: rgba(15, 23, 42, 0.34);
+  border-color: rgba(148, 163, 184, 0.18);
+}
+
+:root[data-theme='dark'] .card.is-active {
+  background: rgba(37, 99, 235, 0.18);
+  border-color: rgba(96, 165, 250, 0.55);
+}
+
+:root[data-theme='dark'] .summary {
+  color: rgba(226, 232, 240, 0.72);
+}
+
+:root[data-theme='dark'] .highlight {
+  color: rgba(226, 232, 240, 0.9);
+}
+
+:root[data-theme='dark'] .description {
+  color: rgba(226, 232, 240, 0.82);
+}
+
+:root[data-theme='dark'] .label {
+  color: rgba(226, 232, 240, 0.65);
+}
+
+:root[data-theme='dark'] .eyebrow {
+  color: rgba(226, 232, 240, 0.58);
+}
+
+:root[data-theme='dark'] .eyebrow.muted {
+  color: rgba(226, 232, 240, 0.5);
+}
+
+:root[data-theme='dark'] .stat {
+  background: rgba(15, 23, 42, 0.34);
+  border-color: rgba(148, 163, 184, 0.18);
+}
+
+:root[data-theme='dark'] .stat-label {
+  color: rgba(226, 232, 240, 0.6);
+}
+
+:root[data-theme='dark'] .divider {
+  background: rgba(148, 163, 184, 0.22);
+}
+
+:root[data-theme='dark'] input,
+:root[data-theme='dark'] textarea,
+:root[data-theme='dark'] select {
+  background: rgba(2, 6, 23, 0.6);
+  border-color: rgba(148, 163, 184, 0.25);
+  color: #e5e7eb;
+}
+
+:root[data-theme='dark'] .banner {
+  background: rgba(37, 99, 235, 0.16);
+  border-color: rgba(96, 165, 250, 0.35);
+  color: rgba(226, 232, 240, 0.9);
+}
+
+:root[data-theme='dark'] .banner.error {
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(248, 113, 113, 0.35);
+}
+
+:root[data-theme='dark'] .button:not(.primary):not(.danger):not(.ghost) {
+  background: rgba(15, 23, 42, 0.28);
+  border-color: rgba(148, 163, 184, 0.22);
+}
+
+:root[data-theme='dark'] .button:not(.primary):not(.danger):not(.ghost):hover {
+  border-color: rgba(96, 165, 250, 0.55);
+}
+
+:root[data-theme='dark'] .button.ghost:not(.header-theme):not(.header-logout):not(.danger) {
+  background: rgba(15, 23, 42, 0.14);
+  border-color: rgba(148, 163, 184, 0.22);
+  color: #60a5fa;
+}
+
+:root[data-theme='dark'] .button.ghost:not(.header-theme):not(.header-logout):not(.danger):hover {
+  background: rgba(15, 23, 42, 0.2);
+  border-color: rgba(96, 165, 250, 0.45);
+}
+
+:root[data-theme='dark'] .footer {
+  background: rgba(15, 23, 42, 0.74);
+  border-color: rgba(148, 163, 184, 0.18);
+}
+
+:root[data-theme='dark'] .footer-text {
+  color: rgba(226, 232, 240, 0.7);
+}
+
+:root[data-theme='dark'] .footer a {
+  color: #60a5fa;
+}
+
+:root[data-theme='dark'] .footer-whatsapp {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.35);
+  color: #22c55e;
+}
+
+:root[data-theme='dark'] .footer-whatsapp:hover {
+  background: rgba(34, 197, 94, 0.18);
+  border-color: rgba(34, 197, 94, 0.5);
+}
+
+:root[data-theme='dark'] .auth-tabs {
+  background: rgba(15, 23, 42, 0.34);
+  border-color: rgba(148, 163, 184, 0.18);
+}
+
+:root[data-theme='dark'] .auth-tab {
+  color: rgba(226, 232, 240, 0.72);
+}
+
+:root[data-theme='dark'] .auth-tab.is-active {
+  background: rgba(15, 23, 42, 0.74);
+  border-color: rgba(148, 163, 184, 0.25);
+  color: #f8fafc;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
 }
 @media (max-width: 960px) {
   .site-header {

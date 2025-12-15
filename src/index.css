@@ -6,9 +6,16 @@
   font-weight: 400;
   color: #0f172a;
   background-color: #f5f7fb;
+  color-scheme: light;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+:root[data-theme='dark'] {
+  color: #e5e7eb;
+  background-color: #0b1220;
+  color-scheme: dark;
 }
 
 *,
@@ -22,6 +29,11 @@ body {
   min-height: 100vh;
   background: radial-gradient(900px at 10% 0%, #e4edff, transparent 55%),
     radial-gradient(700px at 90% 0%, #ffeaf3, transparent 45%), #f5f7fb;
+}
+
+:root[data-theme='dark'] body {
+  background: radial-gradient(900px at 10% 0%, rgba(59, 130, 246, 0.18), transparent 55%),
+    radial-gradient(700px at 90% 0%, rgba(236, 72, 153, 0.14), transparent 45%), #0b1220;
 }
 
 p {

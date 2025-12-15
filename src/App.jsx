@@ -6,6 +6,9 @@ import BasketList from './basket_list.jsx'
 import CreateOrder from './create_order.jsx'
 import UpdateOrder from './update_order.jsx'
 import { listBasketRoutes, saveRouteToBasket } from './api/fakeStore.js'
+import AuthPage from './auth/AuthPage.jsx'
+import { useAuth } from './auth/AuthContext.js'
+import ThemeToggleButton from './theme/ThemeToggleButton.jsx'
 
 const trips = [
   {
@@ -295,6 +298,10 @@ function NotFound() {
 }
 
 function App() {
+  const { user, logout } = useAuth()
+
+  if (!user) return <AuthPage />
+
   return (
     <div className="page">
       <header className="site-header">
@@ -306,12 +313,21 @@ function App() {
           </div>
         </Link>
         <nav className="nav">
+          <div className="nav-links">
           <NavLink to="/" end className={({ isActive }) => (isActive ? 'is-active' : undefined)}>
             Каталог
           </NavLink>
           <NavLink to="/basket" className={({ isActive }) => (isActive ? 'is-active' : undefined)}>
             Моя подборка
           </NavLink>
+          </div>
+          <div className="nav-auth">
+            <ThemeToggleButton className="header-theme" />
+            <span className="header-user">{user.username}</span>
+            <button className="button ghost header-logout" type="button" onClick={logout}>
+              Выйти
+            </button>
+          </div>
         </nav>
         <a className="cta" href="mailto:hello@slowtravel.test">
           Связаться
@@ -334,6 +350,23 @@ function App() {
         </div>
         <div className="footer-links">
           <a href="mailto:hello@slowtravel.test">hello@slowtravel.test</a>
+          <a
+            className="footer-whatsapp"
+            href="https://wa.me/996700399535"
+            target="_blank"
+            rel="noreferrer noopener"
+            aria-label="WhatsApp: +996 700 399 535"
+            title="WhatsApp: +996 700 399 535"
+          >
+            <svg className="footer-whatsapp-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="10" fill="currentColor" />
+              <path
+                fill="#ffffff"
+                d="M16.1 13.8 14.8 13.3c-.2-.1-.4 0-.5.2l-.5.6c-.1.1-.2.1-.3.1-1-.4-1.9-1.2-2.5-2.2-.1-.1-.1-.3 0-.4l.5-.5c.2-.2.2-.4.1-.6l-.6-1.3c-.1-.3-.4-.4-.7-.3l-1 .5c-.3.1-.5.4-.4.7.3 1.8 1.1 3.5 2.4 4.8 1.3 1.3 3 2.1 4.8 2.4.3.1.6-.1.7-.4l.5-1c.1-.3 0-.6-.3-.7Z"
+              />
+            </svg>
+            <span>+996 700399535</span>
+          </a>
           <span>+ чат в мессенджере</span>
         </div>
       </footer>
